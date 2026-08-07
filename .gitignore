@@ -1,0 +1,33 @@
+# Build output
+dist/
+
+# Dependencies
+node_modules/
+
+# Worker dependencies
+worker/node_modules/
+
+# Cloudflare / Wrangler
+worker/.wrangler/
+.wrangler/
+
+# Environment & secrets
+.env
+.env.local
+.dev.vars
+worker/.dev.vars
+
+# VS Code (keep .vscode/launch.json — it's useful for contributors)
+.vscode/settings.json
+.vscode/tasks.json
+
+# OS
+.DS_Store
+Thumbs.db
+
+# TypeScript
+*.tsbuildinfo
+
+# Logs
+*.log
+npm-debug.log*

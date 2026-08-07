@@ -1,0 +1,88 @@
+{
+  "name": "promptpilot",
+  "displayName": "PromptPilot",
+  "description": "Improve your AI agent prompts instantly — works in VS Code, Cursor, Windsurf, and any editor.",
+  "version": "0.1.0",
+  "engines": {
+    "vscode": "^1.85.0"
+  },
+  "categories": [
+    "AI",
+    "Other"
+  ],
+  "main": "./dist/extension.js",
+  "contributes": {
+    "viewsContainers": {
+      "activitybar": [
+        {
+          "id": "promptImprover",
+          "title": "Prompt Improver",
+          "icon": "$(sparkle)"
+        }
+      ]
+    },
+    "views": {
+      "promptImprover": [
+        {
+          "type": "webview",
+          "id": "promptImprover.panel",
+          "name": "Improve Prompt"
+        }
+      ]
+    },
+    "configuration": {
+      "title": "PromptPilot",
+      "properties": {
+        "promptImprover.userProvider": {
+          "type": "string",
+          "enum": ["openai", "groq", "anthropic", "ollama", "custom"],
+          "default": "openai",
+          "description": "Your API provider (only used if you have set an API key via 'PromptPilot: Set API Key')."
+        },
+        "promptImprover.userModel": {
+          "type": "string",
+          "default": "",
+          "description": "Model name to use with your API key. Leave blank to use the provider default."
+        },
+        "promptImprover.userBaseUrl": {
+          "type": "string",
+          "default": "",
+          "description": "Custom API base URL (e.g. http://localhost:11434/v1 for Ollama). Leave blank to use the provider default."
+        },
+        "promptImprover.proxyUrl": {
+          "type": "string",
+          "default": "",
+          "description": "Override the hosted proxy URL (advanced). Leave blank to use the default free proxy."
+        }
+      }
+    },
+    "commands": [
+      {
+        "command": "promptImprover.setApiKey",
+        "title": "PromptPilot: Set API Key"
+      },
+      {
+        "command": "promptImprover.removeApiKey",
+        "title": "PromptPilot: Remove API Key"
+      }
+    ],
+    "keybindings": [
+      {
+        "command": "promptImprover.panel.focus",
+        "key": "ctrl+alt+p",
+        "mac": "cmd+alt+p"
+      }
+    ]
+  },
+  "scripts": {
+    "build": "node esbuild.js",
+    "watch": "node esbuild.js --watch",
+    "vscode:prepublish": "node esbuild.js --production"
+  },
+  "devDependencies": {
+    "@types/vscode": "^1.85.0",
+    "@types/node": "^20.x",
+    "esbuild": "^0.21.0",
+    "typescript": "^5.4.0"
+  }
+}
