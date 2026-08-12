@@ -177,7 +177,7 @@ export class LlmService {
     const cfg = vscode.workspace.getConfiguration("promptImprover");
     const proxyUrl =
       cfg.get<string>("proxyUrl") ||
-      "https://promptpilot-proxy.YOUR_SUBDOMAIN.workers.dev/improve";
+      "https://promptpilot-proxy.5farzinhamzei.workers.dev/improve";
 
     let res: Response;
     try {
