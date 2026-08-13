@@ -3,15 +3,15 @@
   "displayName": "PromptPilot",
   "description": "Improve your AI agent prompts instantly — works in VS Code, Cursor, Windsurf, and any editor. Zero setup required.",
   "version": "0.1.0",
-  "publisher": "REPLACE_WITH_YOUR_PUBLISHER_ID",
+  "publisher": "farzinhamzehi",
   "icon": "icon.png",
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "https://github.com/FARZINzx/Prompt-Pilot.git"
+    "url": "https://github.com/farzinhamzehi/Prompt-Pilot.git"
   },
-  "homepage": "https://github.com/FARZINzx/Prompt-Pilot#readme",
-  "bugs": { "url": "https://github.com/FARZINzx/Prompt-Pilot/issues" },
+  "homepage": "https://github.com/farzinhamzehi/Prompt-Pilot#readme",
+  "bugs": { "url": "https://github.com/farzinhamzehi/Prompt-Pilot/issues" },
   "keywords": ["ai", "prompt", "copilot", "cursor", "llm", "agent", "improve", "chat"],
   "galleryBanner": {
     "color": "#1e1e2e",

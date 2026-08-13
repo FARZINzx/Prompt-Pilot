@@ -149,7 +149,7 @@ async function sendToWindsurf(
         });
       } else {
         await vscode.commands.executeCommand(openCmd);
-        await delay(500);
+        await delay(500); 
         await vscode.commands.executeCommand("editor.action.clipboardPasteAction");
       }
       vscode.window.setStatusBarMessage(
