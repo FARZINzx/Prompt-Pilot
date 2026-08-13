@@ -17,9 +17,8 @@ worker/.wrangler/
 .dev.vars
 worker/.dev.vars
 
-# VS Code (keep .vscode/launch.json — it's useful for contributors)
-.vscode/settings.json
-.vscode/tasks.json
+# VS Code
+.vscode/
 
 # OS
 .DS_Store
@@ -30,4 +29,13 @@ Thumbs.db
 
 # Logs
 *.log
+
+# Lock files
+package-lock.json
+worker/package-lock.json
+
+# Internal Guides & Docs
+AGENT_GUIDE.md
+prompt_improvement_guide.md
+
 npm-debug.log*
