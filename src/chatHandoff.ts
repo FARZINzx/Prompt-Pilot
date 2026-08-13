@@ -52,13 +52,21 @@ async function sendToVSCode(
   prompt: string,
   has: (id: string) => boolean
 ): Promise<void> {
-  // workbench.action.chat.open accepts a string argument and pre-fills the input
   if (has("workbench.action.chat.open")) {
     try {
+      // Open chat with prompt pre-filled
       await vscode.commands.executeCommand("workbench.action.chat.open", prompt);
       await vscode.env.clipboard.writeText(prompt);
+
+      // Best-effort auto-submit: wait for the panel to render, then try submitting.
+      // workbench.action.chat.submit is an internal keybinding command that may work.
+      await delay(400);
+      const submitted = await trySubmit(has);
+
       vscode.window.setStatusBarMessage(
-        "✨ Prompt loaded in Copilot Chat — press Enter to send",
+        submitted
+          ? "✨ Prompt sent to Copilot Chat!"
+          : "✨ Prompt loaded in Copilot Chat — press Enter to send",
         4000
       );
       return;
@@ -67,7 +75,6 @@ async function sendToVSCode(
     }
   }
 
-  // Fallback: plain clipboard
   await clipboardFallback(prompt);
 }
 
@@ -75,7 +82,6 @@ async function sendToCursor(
   prompt: string,
   has: (id: string) => boolean
 ): Promise<void> {
-  // Ordered by preference: Agent > Composer > Chat
   const openCmds = [
     "composer.newAgentChat",
     "composer.startComposerPrompt",
@@ -97,11 +103,17 @@ async function sendToCursor(
       // 3. Wait for the UI to render and gain focus
       await delay(600);
 
-      // 4. Paste into the active input (works when Composer input is focused)
+      // 4. Paste into the active input
       await vscode.commands.executeCommand("editor.action.clipboardPasteAction");
 
+      // 5. Best-effort submit
+      await delay(200);
+      const submitted = await trySubmit(has);
+
       vscode.window.setStatusBarMessage(
-        "✨ Prompt pasted in Cursor — press Enter to send",
+        submitted
+          ? "✨ Prompt sent to Cursor!"
+          : "✨ Prompt pasted in Cursor — press Enter to send",
         4000
       );
       return;
@@ -160,4 +172,30 @@ async function clipboardFallback(prompt: string): Promise<void> {
 
 function delay(ms: number): Promise<void> {
   return new Promise((resolve) => setTimeout(resolve, ms));
+}
+
+/**
+ * Best-effort attempt to submit the chat input.
+ * These are internal/keybinding commands — not guaranteed to work across all
+ * editors or versions, but harmless to try.
+ */
+async function trySubmit(has: (id: string) => boolean): Promise<boolean> {
+  const submitCmds = [
+    "workbench.action.chat.submit",
+    "workbench.action.chat.acceptInput",
+    "composer.startGeneration",
+    "aichat.send",
+  ];
+
+  for (const cmd of submitCmds) {
+    if (has(cmd)) {
+      try {
+        await vscode.commands.executeCommand(cmd);
+        return true;
+      } catch {
+        /* try next */
+      }
+    }
+  }
+  return false;
 }
