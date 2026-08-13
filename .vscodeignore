@@ -1,0 +1,22 @@
+# Source files (compiled to dist/)
+src/
+tsconfig.json
+esbuild.js
+
+# Worker (separate deployment — not part of the extension)
+worker/
+
+# Dev & docs
+.vscode/
+.gitignore
+AGENT_GUIDE.md
+prompt_improvement_guide.md
+*.md
+!README.md
+
+# Dependencies source (we bundle with esbuild)
+node_modules/
+
+# Misc
+.git/
+*.log

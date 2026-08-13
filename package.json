@@ -1,8 +1,22 @@
 {
   "name": "promptpilot",
   "displayName": "PromptPilot",
-  "description": "Improve your AI agent prompts instantly — works in VS Code, Cursor, Windsurf, and any editor.",
+  "description": "Improve your AI agent prompts instantly — works in VS Code, Cursor, Windsurf, and any editor. Zero setup required.",
   "version": "0.1.0",
+  "publisher": "REPLACE_WITH_YOUR_PUBLISHER_ID",
+  "icon": "icon.png",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/FARZINzx/Prompt-Pilot.git"
+  },
+  "homepage": "https://github.com/FARZINzx/Prompt-Pilot#readme",
+  "bugs": { "url": "https://github.com/FARZINzx/Prompt-Pilot/issues" },
+  "keywords": ["ai", "prompt", "copilot", "cursor", "llm", "agent", "improve", "chat"],
+  "galleryBanner": {
+    "color": "#1e1e2e",
+    "theme": "dark"
+  },
   "engines": {
     "vscode": "^1.85.0"
   },
@@ -26,7 +40,8 @@
         {
           "type": "webview",
           "id": "promptImprover.panel",
-          "name": "Improve Prompt"
+          "name": "Improve Prompt",
+          "icon": "$(sparkle)"
         }
       ]
     },
@@ -77,11 +92,14 @@
   "scripts": {
     "build": "node esbuild.js",
     "watch": "node esbuild.js --watch",
-    "vscode:prepublish": "node esbuild.js --production"
+    "vscode:prepublish": "node esbuild.js --production",
+    "package": "vsce package",
+    "publish": "vsce publish"
   },
   "devDependencies": {
     "@types/vscode": "^1.85.0",
     "@types/node": "^20.x",
+    "@vscode/vsce": "^3.0.0",
     "esbuild": "^0.21.0",
     "typescript": "^5.4.0"
   }
