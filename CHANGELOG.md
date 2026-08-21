@@ -7,12 +7,18 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ---
 
+## [0.1.3] - 2026-08-21
+
+### Added
+- Added screenshot preview image to `README.md`.
+- Added `CHANGELOG.md` file.
+
+---
+
 ## [0.1.2] - 2026-08-21
 
 ### Added
 - New professional extension icon (`market.jpg`) and sidebar activity bar icon (`sidebar.jpg`).
-- Added screenshot preview to `README.md`.
-- Added `CHANGELOG.md`.
 
 ### Changed
 - Switched free proxy backend from Groq to Cloudflare Workers AI (`@cf/meta/llama-3.2-3b-instruct`) for 100% availability with zero external API keys and zero geo-blocking.
