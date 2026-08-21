@@ -3,6 +3,8 @@
 > **Improve your AI prompts before you send them.**  
 > Works in VS Code, Cursor, Windsurf, Claude Code — any editor. No setup required.
 
+![PromptPilot Interface](public/preview.png)
+
 ---
 
 ## What it does
@@ -55,14 +57,14 @@ PromptPilot uses a 3-tier LLM strategy — automatic, no configuration needed:
        ↓ not available?
 2. Your own API key (if you added one — unlimited, your cost)
        ↓ no key?
-3. Free hosted proxy → Groq / llama3 (always works, 30 req/day free)
+3. Free hosted proxy → Cloudflare Workers AI / Llama 3.2 (always works, 30 req/day free)
 ```
 
 ---
 
 ## Installation
 
-Install from the VS Code Marketplace (search **PromptPilot**) or:
+Install from the VS Code Marketplace or Open VSX (search **PromptPilot**) or:
 
 ```bash
 code --install-extension promptpilot
@@ -109,22 +111,21 @@ PromptPilot: Remove API Key
 
 ## Self-hosting the proxy
 
-The free proxy is a Cloudflare Worker that calls Groq. You can deploy your own copy:
+The free proxy is a Cloudflare Worker that uses Cloudflare Workers AI (`@cf/meta/llama-3.2-3b-instruct`). You can deploy your own copy:
 
 1. Clone this repo
 2. `cd worker && npm install -g wrangler`
 3. Create a KV namespace: `wrangler kv namespace create RATE_LIMIT`
 4. Update `worker/wrangler.toml` with your KV namespace ID
-5. Add your Groq key: `wrangler secret put GROQ_API_KEY`
-6. Deploy: `wrangler deploy`
-7. Set your worker URL in VS Code settings: `promptImprover.proxyUrl`
+5. Deploy: `wrangler deploy`
+6. Set your worker URL in VS Code settings: `promptImprover.proxyUrl`
 
 ---
 
 ## Development
 
 ```bash
-git clone https://github.com/YOUR_USERNAME/promptpilot
+git clone https://github.com/farzinhamzehi/promptpilot
 cd promptpilot
 npm install
 npm run build   # one-shot build
@@ -139,6 +140,16 @@ npm run watch   # watch mode
 - Your prompts are sent to the improvement backend (either your own key's API, or the free proxy).
 - The free proxy **does not log prompt content** — only the IP address for rate limiting (reset daily).
 - If privacy is critical, add an Ollama key to keep everything local.
+
+---
+
+## Changelog
+
+See [CHANGELOG.md](./CHANGELOG.md) for full version history.
+
+- **v0.1.2**: Added screenshot preview, custom market & sidebar icons, Cloudflare Workers AI backend.
+- **v0.1.1**: Added custom activity bar icon & license.
+- **v0.1.0**: Initial release with 4 presets & 3-tier LLM engine.
 
 ---
 
