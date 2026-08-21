@@ -1,11 +1,10 @@
 export interface Env {
   RATE_LIMIT: KVNamespace;
-  GROQ_API_KEY: string;
+  AI: Ai;
   DAILY_LIMIT: string;
 }
 
-const GROQ_MODEL = "llama-3.1-8b-instant";
-const GROQ_API_URL = "https://api.groq.com/openai/v1/chat/completions";
+const CF_MODEL = "@cf/meta/llama-3.2-3b-instruct";
 
 const CORS_HEADERS = {
   "Access-Control-Allow-Origin": "*",
@@ -25,7 +24,7 @@ async function checkRateLimit(
   ip: string,
   dailyLimit: number
 ): Promise<{ allowed: boolean; remaining: number }> {
-  const today = new Date().toISOString().slice(0, 10); // "2024-08-07"
+  const today = new Date().toISOString().slice(0, 10);
   const key = `rl:${ip}:${today}`;
 
   const raw = await kv.get(key);
@@ -35,7 +34,6 @@ async function checkRateLimit(
     return { allowed: false, remaining: 0 };
   }
 
-  // Increment with TTL of 25 hours (expires tomorrow regardless of exact time)
   await kv.put(key, String(count + 1), { expirationTtl: 90000 });
   return { allowed: true, remaining: dailyLimit - count - 1 };
 }
@@ -81,49 +79,30 @@ export default {
       return json({ error: "Missing systemPrompt or userMessage" }, 400);
     }
 
-    // Sanity check — refuse very large payloads
     if (body.userMessage.length > 8000) {
       return json({ error: "Prompt too long (max 8000 characters)" }, 400);
     }
 
-    // --- Call Groq ---
-    let groqResponse: Response;
+    // --- Call Cloudflare AI ---
     try {
-      groqResponse = await fetch(GROQ_API_URL, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${env.GROQ_API_KEY}`,
-        },
-        body: JSON.stringify({
-          model: GROQ_MODEL,
-          messages: [
-            { role: "system", content: body.systemPrompt },
-            { role: "user", content: body.userMessage },
-          ],
-          temperature: 0.4,
-          max_tokens: 2048,
-        }),
+      const response = await env.AI.run(CF_MODEL, {
+        messages: [
+          { role: "system", content: body.systemPrompt },
+          { role: "user", content: body.userMessage },
+        ],
+        max_tokens: 2048,
+        temperature: 0.4,
       });
+
+      const improved = (response as { response?: string }).response?.trim();
+      if (!improved) {
+        return json({ error: "Empty response from AI" }, 502);
+      }
+
+      return json({ improved, remaining });
     } catch (err) {
-      return json({ error: "Failed to reach Groq API" }, 502);
+      console.error("Cloudflare AI error:", err);
+      return json({ error: "AI service error. Please try again." }, 502);
     }
-
-    if (!groqResponse.ok) {
-      const errorText = await groqResponse.text();
-      console.error("Groq error:", groqResponse.status, errorText);
-      return json({ error: "LLM service error. Please try again." }, 502);
-    }
-
-    const groqData = (await groqResponse.json()) as {
-      choices: { message: { content: string } }[];
-    };
-
-    const improved = groqData.choices?.[0]?.message?.content?.trim();
-    if (!improved) {
-      return json({ error: "Empty response from LLM" }, 502);
-    }
-
-    return json({ improved, remaining });
   },
 };

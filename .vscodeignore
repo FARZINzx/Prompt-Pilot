@@ -20,3 +20,10 @@ node_modules/
 # Misc
 .git/
 *.log
+package-lock.json
+
+# Old root icon
+icon.png
+
+# Source maps (not needed in production VSIX)
+dist/*.map

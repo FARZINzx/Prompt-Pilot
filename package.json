@@ -2,9 +2,9 @@
   "name": "promptpilot",
   "displayName": "PromptPilot",
   "description": "Improve your AI agent prompts instantly — works in VS Code, Cursor, Windsurf, and any editor. Zero setup required.",
-  "version": "0.1.0",
+  "version": "0.1.2",
   "publisher": "farzinhamzehi",
-  "icon": "icon.png",
+  "icon": "public/market.jpg",
   "license": "MIT",
   "repository": {
     "type": "git",
@@ -24,6 +24,9 @@
     "AI",
     "Other"
   ],
+  "activationEvents": [
+    "onView:promptImprover.panel"
+  ],
   "main": "./dist/extension.js",
   "contributes": {
     "viewsContainers": {
@@ -31,7 +34,7 @@
         {
           "id": "promptImprover",
           "title": "Prompt Improver",
-          "icon": "$(sparkle)"
+          "icon": "public/sidebar.jpg"
         }
       ]
     },
@@ -41,7 +44,7 @@
           "type": "webview",
           "id": "promptImprover.panel",
           "name": "Improve Prompt",
-          "icon": "$(sparkle)"
+          "icon": "public/sidebar.jpg"
         }
       ]
     },
