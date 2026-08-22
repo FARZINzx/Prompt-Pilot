@@ -7,6 +7,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ---
 
+## [0.1.6] - 2026-08-22
+
+### Fixed
+- **Quota Reset on Reinstall Bug**: Fixed an issue where daily remaining prompt quota reset to 30 when uninstalling and reinstalling the extension. Added persistent `X-Machine-ID` header rate-limiting on the proxy server and automatic startup quota synchronization for the webview.
+
+---
+
 ## [0.1.5] - 2026-08-22
 
 ### Added

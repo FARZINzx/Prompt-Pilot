@@ -59,6 +59,13 @@ export class PromptPanelProvider implements vscode.WebviewViewProvider {
     view.webview.options = { enableScripts: true };
     view.webview.html = this.html(view.webview);
 
+    // Fetch current remaining quota for this machine ID asynchronously and sync UI
+    void this.llm.getQuota().then((remaining) => {
+      if (typeof remaining === "number") {
+        void view.webview.postMessage({ type: "quota", remaining });
+      }
+    });
+
     view.webview.onDidReceiveMessage(async (msg: WebviewMsg) => {
       switch (msg.type) {
         case "improve": {
@@ -430,7 +437,12 @@ export class PromptPanelProvider implements vscode.WebviewViewProvider {
   // ── Messages from host ─────────────────────────────────────────────────────
   window.addEventListener("message", e => {
     const msg = e.data;
-    if (msg.type === "result") {
+    if (msg.type === "quota") {
+      if (typeof msg.remaining === "number") {
+        $("quota").textContent = "⚡ " + msg.remaining + "/30 remaining prompts";
+        save();
+      }
+    } else if (msg.type === "result") {
       $("output").value = msg.improved;
       if (typeof msg.remaining === "number") {
         $("quota").textContent = "⚡ " + msg.remaining + "/30 remaining prompts";
