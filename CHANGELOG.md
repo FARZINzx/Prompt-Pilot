@@ -7,6 +7,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ---
 
+## [0.1.4] - 2026-08-22
+
+### Fixed
+- Fixed activity bar hover tooltip text from "Prompt Improver" to **"PromptPilot"**.
+- Fixed activity bar gray square icon issue by converting to a theme-adaptive vector SVG (`sidebar.svg`).
+
+---
+
 ## [0.1.3] - 2026-08-21
 
 ### Added
