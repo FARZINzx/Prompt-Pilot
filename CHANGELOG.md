@@ -7,6 +7,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ---
 
+## [0.1.5] - 2026-08-22
+
+### Added
+- **Remaining Prompts Badge**: Displays daily remaining prompt count (e.g., `⚡ 29 free prompts remaining today`).
+- **Nonsensical Input Validation**: Added strict validation against empty, repeated characters, or keyboard-mash gibberish (e.g. `djfhsjhgfjshgjuw`).
+
+---
+
 ## [0.1.4] - 2026-08-22
 
 ### Fixed
